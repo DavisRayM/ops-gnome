@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package ops;
+
+option go_package = "github.com/DavisRayM/integration-helper/proto";
+
+service Ops {}
