@@ -5,12 +5,12 @@ import (
 
 	"github.com/DavisRayM/integration-helper/pkg/config"
 	"github.com/DavisRayM/integration-helper/pkg/helm"
-	pb "github.com/DavisRayM/integration-helper/proto"
+	pb "github.com/DavisRayM/integration-helper/proto/ops/v1"
 	"google.golang.org/grpc"
 )
 
 type Client struct {
-	client pb.OpsClient
+	client pb.OpsServiceClient
 	conn   *grpc.ClientConn
 }
 
@@ -21,13 +21,13 @@ func NewClient(config *config.OpsConfig) (*Client, error) {
 	}
 
 	return &Client{
-		client: pb.NewOpsClient(conn),
+		client: pb.NewOpsServiceClient(conn),
 		conn:   conn,
 	}, nil
 }
 
 func (c *Client) ListSupportedDeployment(ctx context.Context) ([]string, error) {
-	req := &pb.ListSupportedDeploymentsReq{}
+	req := &pb.ListSupportedDeploymentsRequest{}
 	resp, err := c.client.ListSupportedDeployments(ctx, req)
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (c *Client) ListSupportedDeployment(ctx context.Context) ([]string, error) 
 }
 
 func (c *Client) GetDeploymentStatus(ctx context.Context, name, namespace string) (*helm.ReleaseStatus, error) {
-	req := &pb.GetDeploymentStatusReq{Release: name, Namespace: namespace}
+	req := &pb.GetDeploymentStatusRequest{Release: name, Namespace: namespace}
 	resp, err := c.client.GetDeploymentStatus(ctx, req)
 	if err != nil {
 		return &helm.ReleaseStatus{}, err

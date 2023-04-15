@@ -8,7 +8,7 @@ import (
 
 	"github.com/DavisRayM/integration-helper/pkg/config"
 	"github.com/DavisRayM/integration-helper/pkg/helm"
-	pb "github.com/DavisRayM/integration-helper/proto"
+	pb "github.com/DavisRayM/integration-helper/proto/ops/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -17,7 +17,7 @@ import (
 
 // The API struct is a representation of the Ops Servers API.
 type API struct {
-	pb.UnimplementedOpsServer
+	pb.UnimplementedOpsServiceServer
 	grpcServer *grpc.Server
 	config     *config.OpsConfig
 }
@@ -31,7 +31,7 @@ func New(config *config.OpsConfig) (*API, error) {
 		config:     config,
 		grpcServer: grpc.NewServer(opts...),
 	}
-	a.grpcServer.RegisterService(&pb.Ops_ServiceDesc, a)
+	a.grpcServer.RegisterService(&pb.OpsService_ServiceDesc, a)
 	return a, nil
 }
 
@@ -50,14 +50,14 @@ func (a *API) Stop() {
 	a.grpcServer.GracefulStop()
 }
 
-func (a *API) ListSupportedDeployments(ctx context.Context, req *pb.ListSupportedDeploymentsReq) (*pb.ListSupportedDeploymentsResp, error) {
+func (a *API) ListSupportedDeployments(ctx context.Context, req *pb.ListSupportedDeploymentsRequest) (*pb.ListSupportedDeploymentsResponse, error) {
 	var deployments []string
 
 	for _, deployment := range a.config.SupportedDeployments {
 		deployments = append(deployments, fmt.Sprintf("Release %s on %s", deployment.Name, deployment.Cluster))
 	}
 
-	return &pb.ListSupportedDeploymentsResp{Deployment: deployments}, nil
+	return &pb.ListSupportedDeploymentsResponse{Deployment: deployments}, nil
 }
 
 func (a *API) retrieveDeployment(name string, namespace string) (helm.Release, error) {
@@ -70,7 +70,7 @@ func (a *API) retrieveDeployment(name string, namespace string) (helm.Release, e
 	return helm.Release{}, fmt.Errorf("deployment %s is currently not supported", name)
 }
 
-func (a *API) GetDeploymentStatus(ctx context.Context, req *pb.GetDeploymentStatusReq) (*pb.GetDeploymentStatusResp, error) {
+func (a *API) GetDeploymentStatus(ctx context.Context, req *pb.GetDeploymentStatusRequest) (*pb.GetDeploymentStatusResponse, error) {
 	deployment, err := a.retrieveDeployment(req.Release, req.Namespace)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
@@ -89,7 +89,7 @@ func (a *API) GetDeploymentStatus(ctx context.Context, req *pb.GetDeploymentStat
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &pb.GetDeploymentStatusResp{
+	return &pb.GetDeploymentStatusResponse{
 		Status:            release.Info.Status.String(),
 		StatusDescription: release.Info.Description,
 		FirstDeployed:     release.Info.FirstDeployed.Format(time.UnixDate),

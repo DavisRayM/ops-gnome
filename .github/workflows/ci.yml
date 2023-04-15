@@ -30,3 +30,10 @@ jobs:
         run: |
           go install golang.org/x/lint/golint@latest
           golint ./...
+
+      - name: Setup bufbuild
+        uses: bufbuild/buf-setup-action@v1.17.0
+
+      - name: Run protobuf lint
+        run: buf lint
+        working-directory: ./proto
