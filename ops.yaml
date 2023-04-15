@@ -8,6 +8,9 @@ ops:
   port: 12204
 
 tasks:
-  - command: ["echo", "hello"]
-    name: hello
-    repo: ""
+  - command: ["ls"]
+    name: example
+    repo:
+      branch: "main"
+      key:
+      url: "git@github.com:DavisRayM/ops-gnome.git"

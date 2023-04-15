@@ -12,15 +12,21 @@ type OpsConfig struct {
 	Server AddressConfig `yaml:"ops"`
 
 	SupportedDeployments Deployments `yaml:"deployments"`
-	SupportedTasks       []Tasks     `yaml:"tasks"`
+	SupportedTasks       []Task      `yaml:"tasks"`
 }
 
 type Deployments []helm.Release
 
-type Tasks struct {
+type Task struct {
 	Command []string `yaml:"command"`
 	Name    string   `yaml:"name"`
-	Repo    string   `yaml:"repo,omitempty"`
+	Repo    TaskRepo `yaml:"repo,omitempty"`
+}
+
+type TaskRepo struct {
+	URL       string `yaml:"url,omitempty"`
+	DeployKey string `yaml:"key,omitempty"`
+	Branch    string `yaml:"branch,omitempty"`
 }
 
 type AddressConfig struct {
