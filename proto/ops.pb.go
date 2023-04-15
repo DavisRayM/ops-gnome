@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
+	sync "sync"
 )
 
 const (
@@ -19,20 +20,136 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ListSupportedDeploymentsReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ListSupportedDeploymentsReq) Reset() {
+	*x = ListSupportedDeploymentsReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ops_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSupportedDeploymentsReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSupportedDeploymentsReq) ProtoMessage() {}
+
+func (x *ListSupportedDeploymentsReq) ProtoReflect() protoreflect.Message {
+	mi := &file_ops_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSupportedDeploymentsReq.ProtoReflect.Descriptor instead.
+func (*ListSupportedDeploymentsReq) Descriptor() ([]byte, []int) {
+	return file_ops_proto_rawDescGZIP(), []int{0}
+}
+
+type ListSupportedDeploymentsResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Deployment []string `protobuf:"bytes,1,rep,name=deployment,proto3" json:"deployment,omitempty"`
+}
+
+func (x *ListSupportedDeploymentsResp) Reset() {
+	*x = ListSupportedDeploymentsResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ops_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSupportedDeploymentsResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSupportedDeploymentsResp) ProtoMessage() {}
+
+func (x *ListSupportedDeploymentsResp) ProtoReflect() protoreflect.Message {
+	mi := &file_ops_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSupportedDeploymentsResp.ProtoReflect.Descriptor instead.
+func (*ListSupportedDeploymentsResp) Descriptor() ([]byte, []int) {
+	return file_ops_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ListSupportedDeploymentsResp) GetDeployment() []string {
+	if x != nil {
+		return x.Deployment
+	}
+	return nil
+}
+
 var File_ops_proto protoreflect.FileDescriptor
 
 var file_ops_proto_rawDesc = []byte{
 	0x0a, 0x09, 0x6f, 0x70, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x03, 0x6f, 0x70, 0x73,
-	0x32, 0x05, 0x0a, 0x03, 0x4f, 0x70, 0x73, 0x42, 0x2f, 0x5a, 0x2d, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x44, 0x61, 0x76, 0x69, 0x73, 0x52, 0x61, 0x79, 0x4d, 0x2f,
-	0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2d, 0x68, 0x65, 0x6c, 0x70,
-	0x65, 0x72, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x22, 0x1d, 0x0a, 0x1b, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65,
+	0x64, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x52, 0x65, 0x71, 0x22,
+	0x3e, 0x0a, 0x1c, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x64,
+	0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x12,
+	0x1e, 0x0a, 0x0a, 0x64, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x09, 0x52, 0x0a, 0x64, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x32,
+	0x68, 0x0a, 0x03, 0x4f, 0x70, 0x73, 0x12, 0x61, 0x0a, 0x18, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75,
+	0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x64, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x6d, 0x65, 0x6e,
+	0x74, 0x73, 0x12, 0x20, 0x2e, 0x6f, 0x70, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x70,
+	0x70, 0x6f, 0x72, 0x74, 0x65, 0x64, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x6d, 0x65, 0x6e, 0x74,
+	0x73, 0x52, 0x65, 0x71, 0x1a, 0x21, 0x2e, 0x6f, 0x70, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53,
+	0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x64, 0x44, 0x65, 0x70, 0x6c, 0x6f, 0x79, 0x6d, 0x65,
+	0x6e, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x42, 0x2f, 0x5a, 0x2d, 0x67, 0x69, 0x74,
+	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x44, 0x61, 0x76, 0x69, 0x73, 0x52, 0x61, 0x79,
+	0x4d, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2d, 0x68, 0x65,
+	0x6c, 0x70, 0x65, 0x72, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
-var file_ops_proto_goTypes = []interface{}{}
+var (
+	file_ops_proto_rawDescOnce sync.Once
+	file_ops_proto_rawDescData = file_ops_proto_rawDesc
+)
+
+func file_ops_proto_rawDescGZIP() []byte {
+	file_ops_proto_rawDescOnce.Do(func() {
+		file_ops_proto_rawDescData = protoimpl.X.CompressGZIP(file_ops_proto_rawDescData)
+	})
+	return file_ops_proto_rawDescData
+}
+
+var file_ops_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_ops_proto_goTypes = []interface{}{
+	(*ListSupportedDeploymentsReq)(nil),  // 0: ops.ListSupportedDeploymentsReq
+	(*ListSupportedDeploymentsResp)(nil), // 1: ops.ListSupportedDeploymentsResp
+}
 var file_ops_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
+	0, // 0: ops.Ops.ListSupportedDeployments:input_type -> ops.ListSupportedDeploymentsReq
+	1, // 1: ops.Ops.ListSupportedDeployments:output_type -> ops.ListSupportedDeploymentsResp
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -43,18 +160,45 @@ func file_ops_proto_init() {
 	if File_ops_proto != nil {
 		return
 	}
+	if !protoimpl.UnsafeEnabled {
+		file_ops_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSupportedDeploymentsReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ops_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSupportedDeploymentsResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ops_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   0,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_ops_proto_goTypes,
 		DependencyIndexes: file_ops_proto_depIdxs,
+		MessageInfos:      file_ops_proto_msgTypes,
 	}.Build()
 	File_ops_proto = out.File
 	file_ops_proto_rawDesc = nil

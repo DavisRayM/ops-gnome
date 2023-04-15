@@ -4,4 +4,12 @@ package ops;
 
 option go_package = "github.com/DavisRayM/integration-helper/proto";
 
-service Ops {}
+message ListSupportedDeploymentsReq {}
+
+message ListSupportedDeploymentsResp {
+    repeated string deployment = 1;
+}
+
+service Ops {
+    rpc ListSupportedDeployments(ListSupportedDeploymentsReq) returns (ListSupportedDeploymentsResp) {};
+}
