@@ -12,9 +12,16 @@ type OpsConfig struct {
 	Server AddressConfig `yaml:"ops"`
 
 	SupportedDeployments Deployments `yaml:"deployments"`
+	SupportedTasks       []Tasks     `yaml:"tasks"`
 }
 
 type Deployments []helm.Release
+
+type Tasks struct {
+	Command []string `yaml:"command"`
+	Name    string   `yaml:"name"`
+	Repo    string   `yaml:"repo,omitempty"`
+}
 
 type AddressConfig struct {
 	Address string `yaml:"address"`

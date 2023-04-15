@@ -32,7 +32,17 @@ func (c *Client) ListSupportedDeployment(ctx context.Context) ([]string, error) 
 	if err != nil {
 		return nil, err
 	}
-	return resp.Deployment, nil
+	return resp.Deployments, nil
+}
+
+func (c *Client) ListSupportedTasks(ctx context.Context) ([]*pb.Task, error) {
+	req := &pb.ListSupportedTasksRequest{}
+	resp, err := c.client.ListSupportedTasks(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.Tasks, nil
 }
 
 func (c *Client) GetDeploymentStatus(ctx context.Context, name, namespace string) (*helm.ReleaseStatus, error) {

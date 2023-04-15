@@ -7,3 +7,7 @@ ops:
   address: 127.0.0.1
   port: 12204
 
+tasks:
+  - command: ["echo", "hello"]
+    name: hello
+    repo: ""

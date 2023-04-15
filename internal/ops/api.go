@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"strings"
 	"time"
 
 	"github.com/DavisRayM/integration-helper/pkg/config"
@@ -50,6 +51,21 @@ func (a *API) Stop() {
 	a.grpcServer.GracefulStop()
 }
 
+func (a *API) ListSupportedTasks(ctx context.Context, req *pb.ListSupportedTasksRequest) (*pb.ListSupportedTasksResponse, error) {
+	var tasks []*pb.Task
+
+	for _, task := range a.config.SupportedTasks {
+		t := &pb.Task{
+			Name:       task.Name,
+			Command:    strings.Join(task.Command, " "),
+			Repository: task.Repo,
+		}
+		tasks = append(tasks, t)
+	}
+
+	return &pb.ListSupportedTasksResponse{Tasks: tasks}, nil
+}
+
 func (a *API) ListSupportedDeployments(ctx context.Context, req *pb.ListSupportedDeploymentsRequest) (*pb.ListSupportedDeploymentsResponse, error) {
 	var deployments []string
 
@@ -57,17 +73,7 @@ func (a *API) ListSupportedDeployments(ctx context.Context, req *pb.ListSupporte
 		deployments = append(deployments, fmt.Sprintf("Release %s on %s", deployment.Name, deployment.Cluster))
 	}
 
-	return &pb.ListSupportedDeploymentsResponse{Deployment: deployments}, nil
-}
-
-func (a *API) retrieveDeployment(name string, namespace string) (helm.Release, error) {
-	for _, r := range a.config.SupportedDeployments {
-		if r.Name == name && r.Namespace == namespace {
-			return r, nil
-		}
-	}
-
-	return helm.Release{}, fmt.Errorf("deployment %s is currently not supported", name)
+	return &pb.ListSupportedDeploymentsResponse{Deployments: deployments}, nil
 }
 
 func (a *API) GetDeploymentStatus(ctx context.Context, req *pb.GetDeploymentStatusRequest) (*pb.GetDeploymentStatusResponse, error) {
@@ -95,4 +101,14 @@ func (a *API) GetDeploymentStatus(ctx context.Context, req *pb.GetDeploymentStat
 		FirstDeployed:     release.Info.FirstDeployed.Format(time.UnixDate),
 		LastDeployed:      release.Info.LastDeployed.Format(time.UnixDate),
 	}, nil
+}
+
+func (a *API) retrieveDeployment(name string, namespace string) (helm.Release, error) {
+	for _, r := range a.config.SupportedDeployments {
+		if r.Name == name && r.Namespace == namespace {
+			return r, nil
+		}
+	}
+
+	return helm.Release{}, fmt.Errorf("deployment %s is currently not supported", name)
 }

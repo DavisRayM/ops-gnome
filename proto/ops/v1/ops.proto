@@ -7,7 +7,7 @@ option go_package = "github.com/DavisRayM/integration-helper/proto";
 message ListSupportedDeploymentsRequest {}
 
 message ListSupportedDeploymentsResponse {
-    repeated string deployment = 1;
+    repeated string deployments = 1;
 }
 
 message GetDeploymentStatusRequest {
@@ -22,12 +22,16 @@ message GetDeploymentStatusResponse {
     string status_description = 4;
 }
 
-message ListSupportedTasksRequest {}
-
-message ListSupportedTasksResponse {
+message Task {
     string name = 1;
     string command = 2;
     string repository = 3;
+}
+
+message ListSupportedTasksRequest {}
+
+message ListSupportedTasksResponse {
+    repeated Task tasks = 1;
 }
 
 service OpsService { 
