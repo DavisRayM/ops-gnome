@@ -25,6 +25,7 @@ type OpsServiceClient interface {
 	ListSupportedDeployments(ctx context.Context, in *ListSupportedDeploymentsRequest, opts ...grpc.CallOption) (*ListSupportedDeploymentsResponse, error)
 	GetDeploymentStatus(ctx context.Context, in *GetDeploymentStatusRequest, opts ...grpc.CallOption) (*GetDeploymentStatusResponse, error)
 	ListSupportedTasks(ctx context.Context, in *ListSupportedTasksRequest, opts ...grpc.CallOption) (*ListSupportedTasksResponse, error)
+	TriggerTask(ctx context.Context, in *TriggerTaskRequest, opts ...grpc.CallOption) (*TriggerTaskResponse, error)
 }
 
 type opsServiceClient struct {
@@ -62,6 +63,15 @@ func (c *opsServiceClient) ListSupportedTasks(ctx context.Context, in *ListSuppo
 	return out, nil
 }
 
+func (c *opsServiceClient) TriggerTask(ctx context.Context, in *TriggerTaskRequest, opts ...grpc.CallOption) (*TriggerTaskResponse, error) {
+	out := new(TriggerTaskResponse)
+	err := c.cc.Invoke(ctx, "/ops.v1.OpsService/TriggerTask", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OpsServiceServer is the server API for OpsService service.
 // All implementations must embed UnimplementedOpsServiceServer
 // for forward compatibility
@@ -69,6 +79,7 @@ type OpsServiceServer interface {
 	ListSupportedDeployments(context.Context, *ListSupportedDeploymentsRequest) (*ListSupportedDeploymentsResponse, error)
 	GetDeploymentStatus(context.Context, *GetDeploymentStatusRequest) (*GetDeploymentStatusResponse, error)
 	ListSupportedTasks(context.Context, *ListSupportedTasksRequest) (*ListSupportedTasksResponse, error)
+	TriggerTask(context.Context, *TriggerTaskRequest) (*TriggerTaskResponse, error)
 	mustEmbedUnimplementedOpsServiceServer()
 }
 
@@ -84,6 +95,9 @@ func (UnimplementedOpsServiceServer) GetDeploymentStatus(context.Context, *GetDe
 }
 func (UnimplementedOpsServiceServer) ListSupportedTasks(context.Context, *ListSupportedTasksRequest) (*ListSupportedTasksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSupportedTasks not implemented")
+}
+func (UnimplementedOpsServiceServer) TriggerTask(context.Context, *TriggerTaskRequest) (*TriggerTaskResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TriggerTask not implemented")
 }
 func (UnimplementedOpsServiceServer) mustEmbedUnimplementedOpsServiceServer() {}
 
@@ -152,6 +166,24 @@ func _OpsService_ListSupportedTasks_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OpsService_TriggerTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TriggerTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OpsServiceServer).TriggerTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ops.v1.OpsService/TriggerTask",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OpsServiceServer).TriggerTask(ctx, req.(*TriggerTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OpsService_ServiceDesc is the grpc.ServiceDesc for OpsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +202,10 @@ var OpsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSupportedTasks",
 			Handler:    _OpsService_ListSupportedTasks_Handler,
+		},
+		{
+			MethodName: "TriggerTask",
+			Handler:    _OpsService_TriggerTask_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

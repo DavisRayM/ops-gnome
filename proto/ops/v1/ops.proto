@@ -34,8 +34,18 @@ message ListSupportedTasksResponse {
     repeated Task tasks = 1;
 }
 
+message TriggerTaskRequest {
+    string name = 1;
+}
+
+message TriggerTaskResponse {
+    string status = 1;
+    string time_taken = 2;
+}
+
 service OpsService { 
     rpc ListSupportedDeployments(ListSupportedDeploymentsRequest) returns (ListSupportedDeploymentsResponse) {};
     rpc GetDeploymentStatus(GetDeploymentStatusRequest) returns (GetDeploymentStatusResponse) {};
     rpc ListSupportedTasks(ListSupportedTasksRequest) returns (ListSupportedTasksResponse) {};
+    rpc TriggerTask(TriggerTaskRequest) returns (TriggerTaskResponse) {};
 }
