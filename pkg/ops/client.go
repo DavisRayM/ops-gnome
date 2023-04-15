@@ -13,7 +13,7 @@ type Client struct {
 	conn   *grpc.ClientConn
 }
 
-func NewClient(config config.OpsConfig) (*Client, error) {
+func NewClient(config *config.OpsConfig) (*Client, error) {
 	conn, err := grpc.Dial(config.Server.StringRep(), grpc.WithInsecure())
 	if err != nil {
 		return nil, err
