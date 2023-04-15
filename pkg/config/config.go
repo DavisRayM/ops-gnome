@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"github.com/DavisRayM/integration-helper/pkg/helm"
 	"gopkg.in/yaml.v3"
 )
 
@@ -13,21 +14,11 @@ type OpsConfig struct {
 	SupportedDeployments Deployments `yaml:"deployments"`
 }
 
-type Deployments []Deployment
+type Deployments []helm.Release
 
 type AddressConfig struct {
 	Address string `yaml:"address"`
 	Port    int    `yaml:"port"`
-}
-
-type Deployment struct {
-	ReleaseName string `yaml:"release"`
-	Cluster     string `yaml:"cluster"`
-	Namespace   string `yaml:"namespace"`
-}
-
-func (d *Deployment) Path() string {
-	return fmt.Sprintf("helm/releases/%s/%s/%s", d.Cluster, d.Namespace, d.ReleaseName)
 }
 
 func (a *AddressConfig) StringRep() string {
