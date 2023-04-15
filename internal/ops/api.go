@@ -1,9 +1,11 @@
 package ops
 
 import (
+	"context"
+	"fmt"
 	"net"
 
-	"github.com/DavisRayM/integration-helper/internal/config"
+	"github.com/DavisRayM/integration-helper/pkg/config"
 	pb "github.com/DavisRayM/integration-helper/proto"
 	"google.golang.org/grpc"
 )
@@ -41,4 +43,14 @@ func (a *API) Start() error {
 // Stop gracefully shutdown the API services
 func (a *API) Stop() {
 	a.grpcServer.GracefulStop()
+}
+
+func (a *API) ListSupportedDeployments(ctx context.Context, req *pb.ListSupportedDeploymentsReq) (*pb.ListSupportedDeploymentsResp, error) {
+	var deployments []string
+
+	for _, deployment := range a.config.SupportedDeployments {
+		deployments = append(deployments, fmt.Sprintf("Release %s on %s", deployment.ReleaseName, deployment.Cluster))
+	}
+
+	return &pb.ListSupportedDeploymentsResp{Deployment: deployments}, nil
 }

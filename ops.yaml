@@ -1,0 +1,9 @@
+deployments:
+  - cluster: test.cluster.k8s.io
+    namespace: test
+    release: example
+
+ops:
+  address: 127.0.0.1
+  port: 12204
+
