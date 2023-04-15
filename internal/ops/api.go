@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/DavisRayM/integration-helper/internal/runner"
 	"github.com/DavisRayM/integration-helper/pkg/config"
 	"github.com/DavisRayM/integration-helper/pkg/helm"
 	pb "github.com/DavisRayM/integration-helper/proto/ops/v1"
@@ -58,7 +59,7 @@ func (a *API) ListSupportedTasks(ctx context.Context, req *pb.ListSupportedTasks
 		t := &pb.Task{
 			Name:       task.Name,
 			Command:    strings.Join(task.Command, " "),
-			Repository: task.Repo,
+			Repository: task.Repo.URL,
 		}
 		tasks = append(tasks, t)
 	}
@@ -101,6 +102,30 @@ func (a *API) GetDeploymentStatus(ctx context.Context, req *pb.GetDeploymentStat
 		FirstDeployed:     release.Info.FirstDeployed.Format(time.UnixDate),
 		LastDeployed:      release.Info.LastDeployed.Format(time.UnixDate),
 	}, nil
+}
+
+func (a *API) TriggerTask(ctx context.Context, req *pb.TriggerTaskRequest) (*pb.TriggerTaskResponse, error) {
+	task, err := a.retrieveTask(req.Name)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	runner := runner.NewTaskRunner(task)
+	if err := runner.Start(); err != nil {
+		return nil, status.Error(codes.Internal, fmt.Sprintf("failed to run task: %v", err))
+	}
+
+	return &pb.TriggerTaskResponse{TimeTaken: time.Since(runner.StartTime).String(), Status: "Success"}, nil
+}
+
+func (a *API) retrieveTask(name string) (config.Task, error) {
+	for _, t := range a.config.SupportedTasks {
+		if t.Name == name {
+			return t, nil
+		}
+	}
+
+	return config.Task{}, fmt.Errorf("task %s is currently not supported", name)
 }
 
 func (a *API) retrieveDeployment(name string, namespace string) (helm.Release, error) {

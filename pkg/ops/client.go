@@ -45,6 +45,16 @@ func (c *Client) ListSupportedTasks(ctx context.Context) ([]*pb.Task, error) {
 	return resp.Tasks, nil
 }
 
+func (c *Client) TriggerTask(ctx context.Context, name string) (string, error) {
+	req := &pb.TriggerTaskRequest{Name: name}
+	resp, err := c.client.TriggerTask(ctx, req)
+	if err != nil {
+		return "", err
+	}
+
+	return resp.TimeTaken, nil
+}
+
 func (c *Client) GetDeploymentStatus(ctx context.Context, name, namespace string) (*helm.ReleaseStatus, error) {
 	req := &pb.GetDeploymentStatusRequest{Release: name, Namespace: namespace}
 	resp, err := c.client.GetDeploymentStatus(ctx, req)
