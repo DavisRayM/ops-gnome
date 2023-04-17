@@ -31,8 +31,8 @@ type deploymentCallOptions struct {
 
 type CallOption func(o *CallOptions) error
 
-func NewClient(config *config.OpsConfig) (*Client, error) {
-	conn, err := grpc.Dial(config.Server.StringRep(), grpc.WithInsecure())
+func NewClient(config *config.AddressConfig) (*Client, error) {
+	conn, err := grpc.Dial(config.StringRep(), grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
