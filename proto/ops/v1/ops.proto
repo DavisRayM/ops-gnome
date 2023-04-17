@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package ops.v1;
 
-option go_package = "github.com/DavisRayM/integration-helper/proto";
+option go_package = "github.com/DavisRayM/ops-gnome/proto";
 
 message ListSupportedDeploymentsRequest {}
 

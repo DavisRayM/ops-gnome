@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/DavisRayM/integration-helper/pkg/config"
+	"github.com/DavisRayM/ops-gnome/pkg/config"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"

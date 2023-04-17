@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/DavisRayM/integration-helper/internal/ops"
-	"github.com/DavisRayM/integration-helper/pkg/config"
+	"github.com/DavisRayM/ops-gnome/internal/ops"
+	"github.com/DavisRayM/ops-gnome/pkg/config"
 )
 
 var configPath = flag.String("config", "ops.yaml", "Path to the config file.")

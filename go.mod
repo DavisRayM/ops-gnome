@@ -1,4 +1,4 @@
-module github.com/DavisRayM/integration-helper
+module github.com/DavisRayM/ops-gnome
 
 go 1.20
 

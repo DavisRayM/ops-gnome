@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/DavisRayM/integration-helper/pkg/helm"
+	"github.com/DavisRayM/ops-gnome/pkg/helm"
 	"gopkg.in/yaml.v3"
 )
 
