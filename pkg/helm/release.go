@@ -31,6 +31,7 @@ type ReleaseStatus struct {
 // actions using the helm package
 func (r *Release) ActionConfig() (*action.Configuration, error) {
 	envSettings := cli.New()
+	envSettings.KubeContext = r.Cluster
 	actionConfig := new(action.Configuration)
 
 	if err := actionConfig.Init(envSettings.RESTClientGetter(), r.Namespace, "secret", log.Printf); err != nil {
